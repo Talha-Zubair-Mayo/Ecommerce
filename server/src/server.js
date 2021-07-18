@@ -10,10 +10,13 @@ require("./DB/DBConnection");
 
 const UserRoutes = require("./routers/UserRoute/UserRouter");
 const CategoryRoutes = require("./routers/CategoryRouter/CategoryRouter");
+const filesUpload = require("./routers/FileUploadRouter/FileUpload");
+const ProductRoutes = require("./routers/ProductRouter/ProductRouter");
 
 //PORT
 const PORT = process.env.PORT || 5000;
 //Middlewares
+
 app.use(cors());
 app.use(express.json());
 app.use(cookieparser());
@@ -24,9 +27,10 @@ app.use(
 );
 
 // routers
-app.use("/api/", UserRoutes); 
-app.use("/api/", CategoryRoutes); 
-
+app.use("/api/", UserRoutes);
+app.use("/api/", CategoryRoutes);
+app.use("/api/", filesUpload);
+app.use("/api/", ProductRoutes);
 
 app.get("/app", (req, res) => {
   res.status(200).json({ msg: "Hello Server is working Fine" });

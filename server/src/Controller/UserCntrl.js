@@ -7,6 +7,7 @@ const UserCntrl = {
     const { name, email, pass } = req.body;
 
     try {
+      
       //Checking Existing Email
       const emailexist = await User.findOne({ email: email });
       // Checking All Feilds Available
@@ -26,9 +27,10 @@ const UserCntrl = {
       const passwordHash = await bcrypt.hash(pass, 12);
       const newUser = new User({
         name,
-        email,
+        email: email,
         pass: passwordHash,
       });
+
 
       // save to mongoDB
       const regUser = await newUser.save();
@@ -44,7 +46,7 @@ const UserCntrl = {
       //   res.send(AccessToken);
       res.status(200).json({ msg: "User Registered Successfully" });
     } catch (error) {
-      return res.status(500).json({ msg: error.msg });
+      return res.status(500).send(error);
     }
   },
   refreshtoken: async (req, res) => {
@@ -60,7 +62,7 @@ const UserCntrl = {
         });
       }
     } catch (error) {
-      return res.status(500).json({ msg: error.msg });
+      return res.status(500).json({ msg: error.message });
     }
   },
   // login
@@ -68,8 +70,9 @@ const UserCntrl = {
     const { email, pass } = req.body;
 
     try {
+      const emaill = email.toLowerCase();
       //Checking Existing User
-      const user = await User.findOne({ email: email });
+      const user = await User.findOne({ email: emaill });
       // Checking All Feilds Available
       if (!email || !pass) {
         res.status(422).json({ error: "Please Fill All Feilds" });
@@ -91,7 +94,7 @@ const UserCntrl = {
       });
       res.status(200).json({ msg: "Logged in...." });
     } catch (error) {
-      return res.status(500).json({ msg: error.msg });
+      return res.status(500).json({ msg: error.message });
     }
   },
   logout: async (req, res) => {
@@ -99,16 +102,16 @@ const UserCntrl = {
       res.clearCookie("RefreshTokencookie", { path: "user/RefreshToken" });
       res.status(200).json({ msg: "Logged out Successfully" });
     } catch (error) {
-      return res.status(500).json({ msg: error.msg });
+      return res.status(500).json({ msg: error.message });
     }
   },
   getUser: async (req, res) => {
     try {
-      const user = await User.findById(req.user._id).select('-pass');
+      const user = await User.findById(req.user._id).select("-pass");
 
       res.json(user);
     } catch (error) {
-      return res.status(500).json({ msg: error.msg });
+      return res.status(500).json({ msg: error.message });
     }
   },
 };

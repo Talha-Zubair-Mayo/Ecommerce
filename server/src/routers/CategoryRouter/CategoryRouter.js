@@ -6,9 +6,12 @@ const auth = require("../../middlewares/auth");
 router
   .route("/category")
   .get(CategoryCntrl.getcategories)
-  .post(auth, authAdmin, CategoryCntrl.addCategory);
-// router.get("/category", CategoryCntrl.getcategories);
+    .post(auth, authAdmin, CategoryCntrl.addCategory);
 
-// router.post("/category", auth, authAdmin, CategoryCntrl.addCategory);
+  router
+    .route("/category/:id")
+    .delete(auth, authAdmin, CategoryCntrl.deleteCategory)
+    .put(auth, authAdmin, CategoryCntrl.updateCategory);
+
 
 module.exports = router;

@@ -11,6 +11,7 @@ const userSchema = mongoose.Schema(
       require: true,
       trim: true,
       type: String,
+      lowercase: true,
     },
     pass: {
       require: true,
@@ -23,7 +24,7 @@ const userSchema = mongoose.Schema(
       default: 0,
     },
     cart: {
-      type:Array,
+      type: Array,
       default: [],
     },
   },
