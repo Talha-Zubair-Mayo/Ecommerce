@@ -53,7 +53,7 @@ const ProductCntrl = {
         products: products,
       });
     } catch (error) {
-      res.status(500).json({ err: error.message });
+      res.status(500).json({ msg: error.message });
     }
   },
   addProduct: async (req, res) => {
@@ -68,14 +68,14 @@ const ProductCntrl = {
         !content ||
         !category
       ) {
-        return res.status(422).json({ error: "Please Fill all Feilds" });
+        return res.status(422).json({ msg: "Please Fill all Feilds" });
       }
       if (!images) {
-        return res.status(400).json({ error: "No image Were Uploaded" });
+        return res.status(400).json({ msg: "No image Were Uploaded" });
       }
       const productexist = await Products.findOne({ product_Id });
       if (productexist) {
-        res.status(400).json({ error: "Product already Exist" });
+        res.status(400).json({ msg: "Product already Exist" });
       }
       const newProduct = await Products({
         product_Id,
@@ -95,7 +95,7 @@ const ProductCntrl = {
     try {
       await Products.findByIdAndDelete({ _id: req.params.id });
     } catch (error) {
-      res.status(500).json({ err: error.message });
+      res.status(500).json({ msg: error.message });
     }
   },
   updateProduct: async (req, res) => {
@@ -103,7 +103,7 @@ const ProductCntrl = {
       req.body;
     try {
       if (!images) {
-        res.status(400).json({ error: "No image Were Uploaded" });
+        res.status(400).json({ msg: "No image Were Uploaded" });
       }
       await Products.findByIdAndUpdate(
         { _id: req.params.id },
@@ -119,7 +119,7 @@ const ProductCntrl = {
         { new: true }
       );
     } catch (error) {
-      res.status(500).json({ err: error.message });
+      res.status(500).json({ msg: error.message });
     }
   },
   getsingleProduct: async (req, res) => {
